@@ -8,7 +8,6 @@
     <version>7.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>activiti-cloud-acceptance-scenarios-parent</artifactId>
-  <version>7.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Activiti Cloud :: Acceptance Tests</name>
   <modules>
@@ -28,11 +27,6 @@
     </snapshotRepository>
   </distributionManagement>
   <properties>
-    <maven.deploy.skip>true</maven.deploy.skip>
-    <java.release>11</java.release>
-    <java.version>1.${java.release}</java.version>
-    <maven.compiler.release>${java.release}</maven.compiler.release>
-    <activiti-cloud.version>7.1.658</activiti-cloud.version>
     <serenity-maven-plugin.version>2.3.31</serenity-maven-plugin.version>
     <feign.version>10.7.0</feign.version>
   </properties>

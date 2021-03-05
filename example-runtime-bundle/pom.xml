@@ -9,22 +9,6 @@
   </parent>
   <artifactId>example-runtime-bundle</artifactId>
   <name>Activiti Cloud :: Runtime Bundle</name>
-  <version>7.1.0-SNAPSHOT</version>
-  <url>http://activiti.org</url>
-  <scm>
-    <url>https://github.com/Activiti/${project.artifactId}</url>
-    <connection>scm:git:https://github.com/Activiti/${project.artifactId}.git</connection>
-    <developerConnection>scm:git:https://github.com/Activiti/${project.artifactId}.git</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
-  <properties>
-    <maven.deploy.skip>true</maven.deploy.skip>
-    <java.release>11</java.release>
-    <java.version>1.${java.release}</java.version>
-    <maven.compiler.release>${java.release}</maven.compiler.release>
-    <activiti-cloud.version>7.1.658</activiti-cloud.version>
-    <docker-maven-plugin.version>0.34.1</docker-maven-plugin.version>
-  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -49,16 +33,16 @@
       <artifactId>activiti-cloud-starter-runtime-bundle</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+      <groupId>${spring-cloud-starter-stream.groupId}</groupId>
+      <artifactId>${spring-cloud-starter-stream.artifactId}</artifactId>
     </dependency>
     <dependency>
       <groupId>org.activiti.cloud</groupId>
       <artifactId>activiti-cloud-starter-messages-jdbc</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
+      <groupId>${jdbc.groupId}</groupId>
+      <artifactId>${jdbc.artifactId}</artifactId>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -108,7 +92,7 @@
       </plugin>
     </plugins>
   </build>
-    <profiles>
+  <profiles>
     <profile>
       <id>integration-test</id>
       <activation>
@@ -118,6 +102,15 @@
           <value>false</value>
         </property>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework.cloud</groupId>
+          <artifactId>spring-cloud-stream</artifactId>
+          <type>test-jar</type>
+          <scope>test</scope>
+          <classifier>test-binder</classifier>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>
@@ -138,67 +131,8 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${docker-maven-plugin.version}</version>
-            <configuration>
-              <images>
-                <image>
-                  <name>activiti/activiti-keycloak</name>
-                  <alias>activiti-keycloak</alias>
-                  <run>
-                    <ports>
-                      <port>8180:8180</port>
-                    </ports>
-                    <wait>
-                      <log>Keycloak .* started in</log>
-                      <time>40000</time>
-                      <shutdown>5000</shutdown>
-                      <kill>1000</kill>
-                    </wait>
-                  </run>
-                </image>
-                <image>
-                  <name>rabbitmq:management</name>
-                  <alias>activiti-rabbitmq</alias>
-                  <run>
-                    <ports>
-                      <port>5672:5672</port>
-                      <port>15672:15672</port>
-                    </ports>
-                    <wait>
-                      <log>Server startup complete</log>
-                      <time>20000</time>
-                      <shutdown>3000</shutdown>
-                      <kill>1000</kill>
-                    </wait>
-                  </run>
-                </image>
-              </images>
-              <skip>${skipTests}</skip>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>start</goal>
-                  <goal>stop</goal>
-                  <goal>remove</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
-    </profile>
-    <profile>
-      <id>mock-spring-cloud-stream</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.springframework.cloud</groupId>
-          <artifactId>spring-cloud-stream-test-support</artifactId>
-        </dependency>
-      </dependencies>
     </profile>
   </profiles>
 </project>

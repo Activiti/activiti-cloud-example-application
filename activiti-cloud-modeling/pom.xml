@@ -8,15 +8,9 @@
     <version>7.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>activiti-cloud-modeling</artifactId>
-  <version>7.1.0-SNAPSHOT</version>
   <name>Activiti Cloud :: Modeling</name>
-  <url>http://activiti.org</url>
   <properties>
-    <maven.deploy.skip>true</maven.deploy.skip>
-    <java.release>11</java.release>
-    <java.version>1.${java.release}</java.version>
     <maven.compiler.release>${java.release}</maven.compiler.release>
-    <activiti-cloud.version>7.1.658</activiti-cloud.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -39,8 +33,8 @@
       <artifactId>h2</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
+      <groupId>${jdbc.groupId}</groupId>
+      <artifactId>${jdbc.artifactId}</artifactId>
       <scope>runtime</scope>
     </dependency>
     <dependency>

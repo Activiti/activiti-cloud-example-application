@@ -8,15 +8,7 @@
     <version>7.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>example-cloud-connector</artifactId>
-  <version>7.1.0-SNAPSHOT</version>
   <name>Activiti Cloud :: Example Cloud Connector</name>
-  <properties>
-    <maven.deploy.skip>true</maven.deploy.skip>
-    <java.release>11</java.release>
-    <java.version>1.${java.release}</java.version>
-    <maven.compiler.release>${java.release}</maven.compiler.release>
-    <activiti-cloud.version>7.1.658</activiti-cloud.version>
-  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -30,8 +22,8 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+      <groupId>${spring-cloud-starter-stream.groupId}</groupId>
+      <artifactId>${spring-cloud-starter-stream.artifactId}</artifactId>
     </dependency>
     <dependency>
       <groupId>org.activiti.cloud</groupId>

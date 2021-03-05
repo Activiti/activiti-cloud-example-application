@@ -11,9 +11,9 @@
   <groupId>org.activiti.cloud</groupId>
   <artifactId>activiti-cloud-application</artifactId>
   <packaging>pom</packaging>
-  <name>Activiti Cloud Apps Mono :: Aggregator</name>
+  <name>Activiti Cloud :: Application</name>
   <version>7.1.0-SNAPSHOT</version>
-  <description>Activiti Cloud Apps Mono :: Aggregator</description>
+  <description>${project.name}</description>
   <url>http://activiti.org</url>
   <inceptionYear>2017</inceptionYear>
   <organization>
@@ -71,6 +71,11 @@
     <project.scm.organization>Activiti</project.scm.organization>
     <project.scm.repository>activiti-cloud-application</project.scm.repository>
     <project.year>2020</project.year>
+    <activiti-cloud.version>7.1.658</activiti-cloud.version>
+    <jdbc.groupId>org.postgresql</jdbc.groupId>
+    <jdbc.artifactId>postgresql</jdbc.artifactId>
+    <spring-cloud-starter-stream.groupId>org.springframework.cloud</spring-cloud-starter-stream.groupId>
+    <spring-cloud-starter-stream.artifactId>spring-cloud-starter-stream-rabbit</spring-cloud-starter-stream.artifactId>
   </properties>
   <repositories>
     <repository>
