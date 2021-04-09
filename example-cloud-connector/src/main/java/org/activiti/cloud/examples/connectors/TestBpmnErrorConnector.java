@@ -50,7 +50,18 @@ public class TestBpmnErrorConnector {
 
     @StreamListener(value = Channels.CHANNEL)
     public void handle(IntegrationRequest integrationRequest) {
-        CloudBpmnError bpmnError = new CloudBpmnError("CLOUD_BPMN_ERROR");
-        integrationErrorSender.send(IntegrationErrorBuilder.errorFor(integrationRequest, connectorProperties, bpmnError).buildMessage());
+        try {
+            throwRootCause();
+        } catch (Exception e) {
+            CloudBpmnError bpmnError = new CloudBpmnError("CLOUD_BPMN_ERROR",
+                e);
+            integrationErrorSender.send(
+                IntegrationErrorBuilder.errorFor(integrationRequest, connectorProperties, bpmnError)
+                    .buildMessage());
+        }
+    }
+
+    private void throwRootCause() {
+        throw new RuntimeException("Something went wrong!");
     }
 }
