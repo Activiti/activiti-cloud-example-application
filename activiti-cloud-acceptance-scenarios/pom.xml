@@ -5,10 +5,10 @@
   <parent>
     <groupId>org.activiti.cloud</groupId>
     <artifactId>activiti-cloud-application</artifactId>
-    <version>7.1.1063</version>
+    <version>7.1.0-M14MOCK1</version>
   </parent>
   <artifactId>activiti-cloud-acceptance-scenarios-parent</artifactId>
-  <version>7.1.1063</version>
+  <version>7.1.0-M14MOCK1</version>
   <packaging>pom</packaging>
   <name>Activiti Cloud :: Acceptance Tests</name>
   <modules>
@@ -32,7 +32,7 @@
     <java.release>11</java.release>
     <java.version>1.${java.release}</java.version>
     <maven.compiler.release>${java.release}</maven.compiler.release>
-    <activiti-cloud.version>7.1.698</activiti-cloud.version>
+    <activiti-cloud.version>7.1.0-M14MOCK1</activiti-cloud.version>
     <serenity-maven-plugin.version>2.4.34</serenity-maven-plugin.version>
     <feign.version>10.7.0</feign.version>
   </properties>
