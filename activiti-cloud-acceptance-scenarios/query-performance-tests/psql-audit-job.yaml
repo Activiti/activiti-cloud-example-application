@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: audit.sql
+data:
+  data.sql: |
+    ALTER ROLE alfresco IN DATABASE postgres SET search_path TO public,appqueryperformancetest;
+
+    set session query.process_definitions = '1000';
+    set session query.process_instances = '1000';
+    set session query.tasks = '1000';
+    set session query.process_variables = '1000';
+    set session query.task_variables = '1000';
+
+    -- clean up
+    DELETE FROM audit_event;
+
+    DO $$ 
+    DECLARE 
+      i_start int8 := 1;
+      i_increment int8 := 1;
+      i_current int8 := 1;
+      i_end int8 := 1000;
+      i_page integer := current_setting('query.tasks')::int8;
+    BEGIN
+        WHILE i_current <= i_end
+            LOOP
+                -- Insert Task Audit Events 
+                INSERT INTO audit_event(id, event_id, sequence_number, type, event_type, task_id, task_name, task, entity_id, service_full_name, service_name, service_type, timestamp)
+                SELECT
+                  seq,
+                  seq || '' AS event_id,
+                  0 as sequence_number,
+                  'TaskCreatedEvent' AS type,
+                  'TASK_CREATED' AS event_type,
+                  'task_' || seq AS task_id,
+                  'Task Name ' || seq AS task_name,
+                  '{"id":"' || seq || '", "status":"CREATED"}' AS task,
+                  'task_' || seq as entity_id,
+                  'query-performance-test-rb' as service_full_name,
+                  'query-performance-test-rb' as service_name,
+                  'runtime-bundle' as service_type,
+                  EXTRACT(EPOCH FROM now()) as timestamp
+                FROM GENERATE_SERIES(i_start + (i_page * (i_current-1)), i_page * i_current) seq;
+
+                i_current := i_current + i_increment;
+
+            END LOOP;
+    END$$;
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: psql-audit
+spec:
+  template:
+    metadata:
+      name: psql-audit
+      labels:
+        service: psql-audit
+    spec:
+      containers:
+        - name: psql-test
+          image: returnpath/psql
+          args: [ "-f", "/mnt/psql/data.sql" ]
+          envFrom:
+            - secretRef:
+                name: psql
+          volumeMounts:
+            - name: data
+              mountPath: /mnt/psql
+      volumes:
+      - name: data
+        configMap:
+          name: audit.sql
+      restartPolicy: Never
+      

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgres-proxy
+  name: postgres-proxy
+spec:
+  selector:
+    matchLabels:
+      app: postgres-proxy
+  template:
+    metadata:
+      labels:
+        app: postgres-proxy
+    spec:
+      containers:
+      - image: tecnativa/tcp-proxy:latest
+        imagePullPolicy: Always
+        env:
+          - name: PGPORT
+            valueFrom:
+              secretKeyRef:
+                name: psql
+                key: PGPORT          
+          - name: PGHOST
+            valueFrom:
+              secretKeyRef:
+                name: psql
+                key: PGHOST         
+          - name: LISTEN
+            value: ":$(PGPORT)" # The listen address that it will be exposed to.
+          - name: TALK
+            value: "$(PGHOST):$(PGPORT)"
+        name: postgres-proxy
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10m
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
