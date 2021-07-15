@@ -34,7 +34,7 @@
     <maven.compiler.release>${java.release}</maven.compiler.release>
     <activiti-cloud.version>7.1.700</activiti-cloud.version>
     <serenity-maven-plugin.version>2.4.34</serenity-maven-plugin.version>
-    <feign.version>10.7.0</feign.version>
+    <feign.version>11.2</feign.version>
   </properties>
   <dependencyManagement>
     <dependencies>
